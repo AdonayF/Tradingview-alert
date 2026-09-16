@@ -13,7 +13,6 @@ def home():
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    # Read the alert sent by TradingView
     data = request.get_json(silent=True) or {}
 
     symbol = str(data.get("symbol", "TradingView"))
@@ -25,7 +24,6 @@ def webhook():
         )
     )
 
-    # Get private credentials from Render environment variables
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
     auth_token = os.environ["TWILIO_AUTH_TOKEN"]
     twilio_number = os.environ["TWILIO_PHONE_NUMBER"]
@@ -33,10 +31,10 @@ def webhook():
 
     client = Client(account_sid, auth_token)
 
-   call = client.calls.create(
-    url="https://webhooks.twilio.com/v1/Voice/Template/voice_text_to_speech",
-    to=my_number,
-    from_=twilio_number,
+    call = client.calls.create(
+        url="https://webhooks.twilio.com/v1/Voice/Template/voice_text_to_speech",
+        to=my_number,
+        from_=twilio_number,
     )
 
     return jsonify({
