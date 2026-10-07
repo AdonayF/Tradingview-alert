@@ -38,9 +38,8 @@ def webhook():
     response.say(message)
 
     call = client.calls.create(
-        twiml=str(response),
+        url="https://webhooks.twilio.com/v1/Voice/Template/voice_text_to_speech",
         to=my_number,
-        from_=twilio_number,
     )
 
     return jsonify({
