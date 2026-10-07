@@ -1,3 +1,4 @@
+from twilio.twiml.voice_response import VoiceResponse
 import os
 
 from flask import Flask, jsonify, request
@@ -31,8 +32,13 @@ def webhook():
 
     client = Client(account_sid, auth_token)
 
+    response = VoiceResponse()
+    response.say(message)
+    response.pause(length=1)
+    response.say(message)
+
     call = client.calls.create(
-        url="https://webhooks.twilio.com/v1/Voice/Template/voice_text_to_speech",
+        twiml=str(response),
         to=my_number,
         from_=twilio_number,
     )
